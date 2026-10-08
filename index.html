@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday, Krima!</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--g1:#ffd6e8;--g2:#e5d4ff;--g3:#ffe8c7;--fg:#4a1f4a;--card:rgba(255,255,255,.55);--accent:#e0457b;--accent2:#7c4dff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--g1:#2a1030;--g2:#1b1440;--g3:#3a1530;--fg:#fde8f4;--card:rgba(40,20,50,.55);--accent:#ff7aa8;--accent2:#b79cff}}
+:root[data-theme="dark"]{--g1:#2a1030;--g2:#1b1440;--g3:#3a1530;--fg:#fde8f4;--card:rgba(40,20,50,.55);--accent:#ff7aa8;--accent2:#b79cff}
+html,body{height:100%;margin:0}
+body{background:linear-gradient(135deg,var(--g1),var(--g2),var(--g3));background-size:300% 300%;animation:bg 14s ease infinite;color:var(--fg);font-family:Quicksand,system-ui,sans-serif;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+@keyframes bg{50%{background-position:100% 100%}}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:5}
+.balloon{position:fixed;bottom:-140px;width:56px;height:70px;border-radius:50% 50% 48% 48%;opacity:.85;animation:rise linear infinite;z-index:1}
+.balloon:after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:60px;background:currentColor;opacity:.4}
+.balloon:before{content:"";position:absolute;left:18%;top:15%;width:12px;height:18px;border-radius:50%;background:rgba(255,255,255,.55);transform:rotate(25deg)}
+@keyframes rise{to{transform:translateY(-130vh) translateX(var(--dx,20px))}}
+main{position:relative;z-index:2;margin:20px;padding:28px 24px 32px;max-width:440px;width:100%;background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.4);border-radius:28px;box-shadow:0 20px 60px rgba(124,77,255,.25)}
+.hint{font-size:13px;opacity:.7;margin:0 0 6px}
+svg{width:170px;height:auto;cursor:pointer;filter:drop-shadow(0 8px 12px rgba(0,0,0,.18))}
+.flame{transform-origin:center bottom;animation:flick .5s ease-in-out infinite alternate}
+.flame:nth-child(2){animation-delay:.15s}.flame:nth-child(3){animation-delay:.3s}
+@keyframes flick{from{transform:scale(1,1) rotate(-3deg)}to{transform:scale(.9,1.15) rotate(3deg)}}
+.out .flame{display:none}
+h1{font-family:Pacifico,cursive;font-weight:400;font-size:clamp(34px,10vw,52px);line-height:1.2;margin:10px 0 6px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent));background-size:200%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite;min-height:1.3em}
+@keyframes shine{to{background-position:200%}}
+.name{display:block;font-size:1.25em}
+p.msg{font-size:17px;line-height:1.6;margin:12px 0 0;opacity:0;transform:translateY(10px);transition:all 1s}
+p.msg.show{opacity:1;transform:none}
+button{margin-top:20px;font:700 16px Quicksand,system-ui,sans-serif;padding:13px 28px;border:0;border-radius:999px;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 8px 20px rgba(224,69,123,.4);cursor:pointer;transition:transform .15s}
+button:active{transform:scale(.95)}
+#intro{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,var(--g1),var(--g2),var(--g3));transition:opacity .8s,visibility .8s}
+#intro.hide{opacity:0;visibility:hidden}
+#intro .gift{font-size:96px;display:inline-block;animation:shake 2.2s ease-in-out infinite;transform-origin:bottom center}
+@keyframes shake{0%,60%,100%{transform:rotate(0)}65%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}85%{transform:rotate(-6deg)}95%{transform:rotate(4deg)}}
+#intro h2{font-family:Pacifico,cursive;font-weight:400;font-size:clamp(30px,9vw,44px);margin:10px 0 6px;color:var(--accent)}
+#intro p{font-size:17px;margin:6px 24px 0}
+</style>
+</head>
+<body>
+<div id="intro"><div><div class="gift">🎁</div><h2>A surprise for Krima</h2><p>Something special is waiting for you.</p><button id="open">Open your surprise 🎉</button></div></div>
+<canvas id="c"></canvas>
+<div id="balloons"></div>
+<main>
+  <p class="hint">✨ tap the cake to blow out the candles ✨</p>
+  <svg id="cake" viewBox="0 0 200 190" aria-label="Birthday cake">
+    <g fill="#ffd54a">
+      <rect x="62" y="40" width="8" height="32" rx="3" fill="#4cc9f0"/>
+      <rect x="96" y="34" width="8" height="38" rx="3" fill="#ff4d8d"/>
+      <rect x="130" y="40" width="8" height="32" rx="3" fill="#80ed99"/>
+    </g>
+    <g>
+      <path class="flame" d="M66 36c-7-8-2-16 0-20 2 4 7 12 0 20z" fill="#ffb703"/>
+      <path class="flame" d="M100 30c-7-8-2-16 0-20 2 4 7 12 0 20z" fill="#ffb703"/>
+      <path class="flame" d="M134 36c-7-8-2-16 0-20 2 4 7 12 0 20z" fill="#ffb703"/>
+    </g>
+    <rect x="30" y="72" width="140" height="42" rx="12" fill="#ff8fb8"/>
+    <path d="M30 88q10 14 20 0t20 0 20 0 20 0 20 0 20 0 20 0v-4q0-12-12-12H42q-12 0-12 12z" fill="#fff4f8"/>
+    <rect x="18" y="112" width="164" height="54" rx="14" fill="#b79cff"/>
+    <path d="M18 128q10 14 20 0t20 0 20 0 20 0 20 0 20 0 20 0 20 0 14 0v-8q0-8-14-8H32q-14 0-14 8z" fill="#fff4f8"/>
+    <ellipse cx="100" cy="172" rx="92" ry="9" fill="#fff" opacity=".7"/>
+    <g fill="#ffd54a"><circle cx="50" cy="150" r="4"/><circle cx="85" cy="154" r="4"/><circle cx="120" cy="150" r="4"/><circle cx="152" cy="154" r="4"/></g>
+  </svg>
+  <h1 id="title"></h1>
+  <p class="msg" id="msg">Wishing you a year full of joy, laughter and zero bugs.<br>May every dream compile on the first try! 🎈</p>
+  <div><button id="btn">More confetti 🎉</button> <button id="music">🎵 Play music</button></div>
+</main>
+<script>
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+let W,H,parts=[];
+function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight}
+addEventListener('resize',resize);resize();
+const colors=['#ff4d8d','#ffb703','#4cc9f0','#7c4dff','#80ed99','#ff7aa8'];
+function burst(x,y,n=120){
+  for(let i=0;i<n;i++){
+    const a=Math.random()*Math.PI*2,s=4+Math.random()*9;
+    parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-6,w:6+Math.random()*6,h:4+Math.random()*5,r:Math.random()*6,vr:(Math.random()-.5)*.4,c:colors[Math.random()*colors.length|0],life:1,round:Math.random()<.3});
+  }
+}
+(function tick(){
+  ctx.clearRect(0,0,W,H);
+  parts=parts.filter(p=>p.life>0&&p.y<H+20);
+  for(const p of parts){
+    p.vy+=.25;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.life-=.005;
+    ctx.save();ctx.globalAlpha=Math.max(p.life,0);ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;
+    if(p.round){ctx.beginPath();ctx.arc(0,0,p.h/1.5,0,7);ctx.fill()}else ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+    ctx.restore();
+  }
+  requestAnimationFrame(tick);
+})();
+const bl=document.getElementById('balloons');
+for(let i=0;i<9;i++){
+  const b=document.createElement('div');b.className='balloon';
+  const c=colors[i%colors.length];
+  b.style.cssText=`left:${5+i*11}%;background:${c};color:${c};animation-duration:${9+Math.random()*7}s;animation-delay:${-Math.random()*12}s;--dx:${(Math.random()-.5)*80}px`;
+  bl.appendChild(b);
+}
+const text="Happy Birthday,\u00A0Krima! 🎉",t=document.getElementById('title');
+let i=0;
+function type(){
+  const s=text.slice(0,++i);
+  t.innerHTML=s.replace('Krima','<span class="name">Krima</span>');
+  if(i<text.length)setTimeout(type,90);
+  else{document.getElementById('msg').classList.add('show');burst(W/2,H/3)}
+}
+const cake=document.getElementById('cake');
+document.getElementById('open').onclick=()=>{document.getElementById('intro').classList.add('hide');playMusic();setTimeout(type,500)};
+cake.onclick=()=>{cake.classList.toggle('out');burst(W/2,H/3,160);if(!playing&&cake.classList.contains('out'))playMusic()};
+const SH=-5; // transpose to a comfortable key (D major)
+const mel=[[67,.75],[67,.25],[69,1],[67,1],[72,1],[71,2],
+[67,.75],[67,.25],[69,1],[67,1],[74,1],[72,2],
+[67,.75],[67,.25],[79,1],[76,1],[72,1],[71,1],[69,1],
+[77,.75],[77,.25],[76,1],[72,1],[74,1],[72,3]].map(([n,d])=>[n+SH,d]);
+const CH={I:[38,[54,57,62]],IV:[43,[55,59,62]],V:[45,[52,55,61]]};
+const bars=['I','V','V','I','I','IV','I','I'];
+let ac=null,playing=false,timer=null,nodes=[],master=null;
+const mb=document.getElementById('music');
+const mf=m=>440*Math.pow(2,(m-69)/12);
+function reverb(){
+  const len=ac.sampleRate*2.2,buf=ac.createBuffer(2,len,ac.sampleRate);
+  for(let c=0;c<2;c++){const d=buf.getChannelData(c);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.5)}
+  const cv=ac.createConvolver();cv.buffer=buf;return cv;
+}
+function note(m,t,dur,vol,out){
+  const f=mf(m),g=ac.createGain(),lp=ac.createBiquadFilter();
+  lp.type='lowpass';lp.frequency.value=Math.min(f*6,5000);
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vol,t+.012);
+  g.gain.exponentialRampToValueAtTime(vol*.35,t+.25);
+  g.gain.exponentialRampToValueAtTime(.0008,t+dur+.5);
+  g.connect(lp);lp.connect(out);
+  [[1,1],[2,.45],[3,.22],[4,.1]].forEach(([h,a])=>{
+    const o=ac.createOscillator(),og=ac.createGain();
+    o.type='sine';o.frequency.value=f*h;og.gain.value=a;
+    o.connect(og);og.connect(g);o.start(t);o.stop(t+dur+.6);nodes.push(o);
+  });
+}
+function stopMusic(){
+  playing=false;clearTimeout(timer);
+  if(master){try{master.gain.cancelScheduledValues(ac.currentTime);master.gain.setTargetAtTime(0,ac.currentTime,.05)}catch(e){}}
+  nodes.forEach(o=>{try{o.stop(ac.currentTime+.3)}catch(e){}});nodes=[];
+  mb.textContent='🎵 Play music';
+}
+function playMusic(){
+  try{
+    ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    if(ac.state==='suspended')ac.resume();
+    master=ac.createGain();master.gain.value=.9;master.connect(ac.destination);
+    const rv=reverb(),wet=ac.createGain();wet.gain.value=.35;rv.connect(wet);wet.connect(master);
+    const bus=ac.createGain();bus.connect(master);bus.connect(rv);
+    const beat=.58,t0=ac.currentTime+.15;
+    let t=t0;
+    mel.forEach(([m,d])=>{note(m,t,d*beat,.5,bus);t+=d*beat});
+    bars.forEach((c,i)=>{
+      const bt=t0+(1+i*3)*beat,[bass,tri]=CH[c];
+      note(bass,bt,beat*1.6,.35,bus);
+      [1,2].forEach(k=>tri.forEach(n=>note(n,bt+k*beat,beat*.7,.1,bus)));
+    });
+    playing=true;mb.textContent='⏸ Stop music';
+    timer=setTimeout(stopMusic,(t-ac.currentTime)*1000+1200);
+  }catch(e){mb.textContent='Audio unavailable'}
+}
+mb.onclick=()=>playing?stopMusic():playMusic();
+document.getElementById('btn').onclick=()=>{burst(Math.random()*W,H*.3,100);burst(W/2,H/2,80)};
+</script>
+</body>
+</html>
 
